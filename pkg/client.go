@@ -47,6 +47,7 @@ func s3Client(c Config) *s3.Client {
 	cfg, err := awsConfig.LoadDefaultConfig(context.TODO(),
 		awsConfig.WithEndpointResolverWithOptions(r2Resolver),
 		awsConfig.WithCredentialsProvider(credentials.NewStaticCredentialsProvider(c.AccessKeyID, c.SecretAccessKey, "")),
+		awsConfig.WithRegion("auto"),
 	)
 	if err != nil {
 		log.Fatal(err)

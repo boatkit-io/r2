@@ -56,8 +56,8 @@ func (b *R2Bucket) GetObjects() []types.Object {
 		}
 		out = append(out, listObjectsOutput.Contents...)
 
-		if listObjectsOutput.ContinuationToken != nil {
-			ctoken = listObjectsOutput.ContinuationToken
+		if listObjectsOutput.NextContinuationToken != nil {
+			ctoken = listObjectsOutput.NextContinuationToken
 			continue
 		}
 		break
