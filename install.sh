@@ -3,7 +3,7 @@ OS=`uname -s`
 ARCH=`uname -m`
 
 curl -fsSLo $HOME/r2-${OS}-${ARCH}.tar.gz \
-	https://github.com/erdos-one/r2/releases/download/v0.1.0-alpha/r2-${OS}-${ARCH}.tar.gz
+	https://github.com/boatkit-io/r2/releases/download/v0.1.0-alpha/r2-${OS}-${ARCH}.tar.gz
 	
 mkdir -p $HOME/r2-v0.1.0-alpha
 tar -xzf $HOME/r2-${OS}-${ARCH}.tar.gz -C $HOME/r2-v0.1.0-alpha

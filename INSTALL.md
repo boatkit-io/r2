@@ -14,5 +14,5 @@ sh <(curl https://install.erdos.one/r2)
 The library is available as a Go module and can be installed with the following command:
 
 ```bash
-go get github.com/erdos-one/r2/pkg
+go get github.com/boatkit-io/r2/pkg
 ```
