@@ -43,13 +43,27 @@ func (c *R2Client) Bucket(bucketName string) R2Bucket {
 // API call. The returned list of objects is of type types.Object, which is a struct containing all
 // available information about the object, such as its name, size, and last modified date.
 func (b *R2Bucket) GetObjects() []types.Object {
-	listObjectsOutput, err := b.Client.ListObjectsV2(context.TODO(), &s3.ListObjectsV2Input{
-		Bucket: &b.Name,
-	})
-	if err != nil {
-		log.Fatal(err)
+	out := []types.Object{}
+
+	var ctoken *string
+	for {
+		listObjectsOutput, err := b.Client.ListObjectsV2(context.TODO(), &s3.ListObjectsV2Input{
+			ContinuationToken: ctoken,
+			Bucket:            &b.Name,
+		})
+		if err != nil {
+			log.Fatal(err)
+		}
+		out = append(out, listObjectsOutput.Contents...)
+
+		if listObjectsOutput.ContinuationToken != nil {
+			ctoken = listObjectsOutput.ContinuationToken
+			continue
+		}
+		break
 	}
-	return listObjectsOutput.Contents
+
+	return out
 }
 
 // GetObjectPaths returns a list of all object paths in a bucket, represented as strings. This
@@ -71,7 +85,7 @@ func (b *R2Bucket) PrintObjects() {
 	var objectData [][]string
 	for _, object := range b.GetObjects() {
 		// Get file size
-		fs := fileSizeFmt(object.Size)
+		fs := fileSizeFmt(*object.Size)
 
 		// Append last modified, file size, and file name to objectData
 		objectData = append(objectData, []string{
